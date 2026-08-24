@@ -4,43 +4,53 @@ Gere projetos fullstack completos direto no VS Code — frontend, backend e um `
 
 ---
 
-## ✨ Funcionalidades
+> ## ⚠️ ATENÇÃO — LEIA ANTES DE USAR
+>
+> Esta extensão **gera apenas a estrutura** do projeto, sem nenhuma lógica implementada.
+>
+> - Os arquivos gerados são **esqueletos vazios** com comentários `// TODO`
+> - A lógica de negócio, validações, queries e regras ficam **por sua conta**
+> - A estrutura de pastas segue o padrão MVC do jeito que o autor aprendeu — sinta-se livre para reorganizar
+> - Angular está disponível no menu mas com **suporte limitado** por enquanto
 
-- ✅ Gera estrutura completa de **frontend** (React JS ou React TS)
-- ✅ Gera estrutura completa de **backend** (Node JS ou Node TS)
-- ✅ `package.json` global na raiz com scripts unificados
-- ✅ Roda frontend e backend **em paralelo** com um único comando
-- ✅ Estrutura MVC pronta: Repository, Service, Controller, Routes
-- ✅ Middlewares de autenticação JWT e tratamento de erros incluídos
-- ✅ Componentes React prontos: Button, Input, Modal, Navbar, Footer
-- ✅ Interceptors Axios configurados
+---
+
+## ✨ O que é gerado
+
+- Estrutura completa de **frontend** (React JS ou React TS)
+- Estrutura completa de **backend** (Node JS ou Node TS)
+- `package.json` global na raiz com scripts unificados
+- Frontend e backend rodando **em paralelo** com um único comando
+- Estrutura MVC: Repository, Service, Controller
+- Pastas para middlewares, rotas e configuração
+- Componentes React vazios: Button, Input, Modal, Navbar, Footer
 
 ---
 
 ## 🚀 Como usar
 
-### 1. Abrir a paleta de comandos
+**1. Abrir a paleta de comandos**
 ```
 Ctrl + Shift + P → Constellation: Gerar Projeto
 ```
 
-### 2. Selecionar a pasta do projeto
+**2. Selecionar a pasta do projeto**
 
-### 3. Escolher o frontend
+**3. Escolher o frontend**
 - React JS
 - React TS
-- Angular
+- Angular *(suporte limitado)*
 
-### 4. Escolher o backend
+**4. Escolher o backend**
 - Node JS
 - Node TS
 
-### 5. Instalar dependências
+**5. Instalar dependências**
 ```bash
 npm run install:all
 ```
 
-### 6. Rodar o projeto
+**6. Rodar o projeto**
 ```bash
 npm run dev
 ```
@@ -67,21 +77,21 @@ meu-projeto/
 ├── package.json              ← raiz global
 ├── frontend/
 │   ├── src/
-│   │   ├── components/       ← Button, Input, Modal, Navbar, Footer
-│   │   ├── pages/            ← HomePage
-│   │   ├── hooks/            ← useAuth
-│   │   ├── services/         ← api.js / api.ts
+│   │   ├── components/       ← Button, Input, Modal, Navbar, Footer (vazios)
+│   │   ├── pages/            ← HomePage (vazia)
+│   │   ├── hooks/            ← useAuth (vazio)
+│   │   ├── services/         ← api.js / api.ts (vazio)
 │   │   └── types/            ← index.ts (somente TS)
 │   ├── index.html
 │   └── package.json
 └── backend/
     ├── src/
-    │   ├── controllers/      ← UsuarioController
-    │   ├── services/         ← UsuarioService
-    │   ├── repositories/     ← UsuarioRepository
-    │   ├── routes/           ← usuario.routes
+    │   ├── controllers/      ← UsuarioController (vazio)
+    │   ├── services/         ← UsuarioService (vazio)
+    │   ├── repositories/     ← UsuarioRepository (vazio)
+    │   ├── routes/           ← estrutura de rotas
     │   ├── middleware/       ← auth, error
-    │   └── config/           ← env.config
+    │   └── config/           ← env, data-source
     ├── .env
     └── package.json
 ```
@@ -100,16 +110,14 @@ meu-projeto/
 
 **Frontend**
 - React 18 + React Router DOM
-- Axios com interceptors
+- Axios
 - Vite
-- Bootstrap + Tailwind (descomentável)
 
 **Backend**
 - Express + Cors + Helmet
 - JWT + Bcrypt
 - Winston + Morgan
 - Dotenv + Rate Limit
-- Nodemailer + Multer
 
 ---
 
