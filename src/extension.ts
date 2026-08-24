@@ -1,0 +1,44 @@
+import * as vscode from 'vscode'
+import { gerarProjeto } from './Templates/templatemestre'
+
+export function activate(context: vscode.ExtensionContext) {
+
+    const cmd = vscode.commands.registerCommand('constellation.gerar', async () => {
+
+        // 1. Escolhe a pasta
+        const pasta = await vscode.window.showOpenDialog({
+            canSelectFolders: true,
+            canSelectFiles: false,
+            openLabel: 'Selecionar pasta do projeto'
+        })
+        if (!pasta || pasta.length === 0) return
+
+        const projectPath = pasta[0].fsPath
+
+        // 2. Escolhe o frontend
+        const frontend = await vscode.window.showQuickPick(
+            ['React JS', 'React TS', 'Angular'],
+            { placeHolder: 'Qual frontend?' }
+        )
+        if (!frontend) return
+
+        // 3. Escolhe o backend
+        const backend = await vscode.window.showQuickPick(
+            ['Node JS', 'Node TS'],
+            { placeHolder: 'Qual backend?' }
+        )
+        if (!backend) return
+
+        // 4. Gera!
+        try {
+            gerarProjeto(projectPath, frontend, backend)
+            vscode.window.showInformationMessage(`✅ Projeto gerado em ${projectPath}`)
+        } catch (err: any) {
+            vscode.window.showErrorMessage(`❌ Erro: ${err.message}`)
+        }
+    })
+
+    context.subscriptions.push(cmd)
+}
+
+export function deactivate() {}
