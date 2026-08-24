@@ -1,44 +1,44 @@
-import * as fs from 'fs'
-import * as path from 'path'
-import { generateUniversalMVC } from './templateuniversal'
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.backendTS = backendTS;
+exports.backendJS = backendJS;
+const fs = require("fs");
+const path = require("path");
+const templateuniversal_1 = require("./templateuniversal");
 // ==============================
 // HELPER
 // ==============================
-function writeFile(projectPath: string, filePath: string, content: string) {
-    const fullPath = path.join(projectPath, filePath)
-    const dir = path.dirname(fullPath)
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
-    fs.writeFileSync(fullPath, content)
+function writeFile(projectPath, filePath, content) {
+    const fullPath = path.join(projectPath, filePath);
+    const dir = path.dirname(fullPath);
+    if (!fs.existsSync(dir))
+        fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(fullPath, content);
 }
-
-function criarPasta(projectPath: string, pasta: string) {
-    const fullPath = path.join(projectPath, pasta)
-    if (!fs.existsSync(fullPath)) fs.mkdirSync(fullPath, { recursive: true })
+function criarPasta(projectPath, pasta) {
+    const fullPath = path.join(projectPath, pasta);
+    if (!fs.existsSync(fullPath))
+        fs.mkdirSync(fullPath, { recursive: true });
 }
-
 // ==============================
 // PASTAS DO BACKEND
 // ==============================
-function criarPastasBackend(projectPath: string) {
-    criarPasta(projectPath, 'src/controllers')
-    criarPasta(projectPath, 'src/services')
-    criarPasta(projectPath, 'src/repositories')
-    criarPasta(projectPath, 'src/routes')
-    criarPasta(projectPath, 'src/middleware')
-    criarPasta(projectPath, 'src/schemas')
-    criarPasta(projectPath, 'src/utils')
-    criarPasta(projectPath, 'src/config')
-    criarPasta(projectPath, 'src/migrations')
+function criarPastasBackend(projectPath) {
+    criarPasta(projectPath, 'src/controllers');
+    criarPasta(projectPath, 'src/services');
+    criarPasta(projectPath, 'src/repositories');
+    criarPasta(projectPath, 'src/routes');
+    criarPasta(projectPath, 'src/middleware');
+    criarPasta(projectPath, 'src/schemas');
+    criarPasta(projectPath, 'src/utils');
+    criarPasta(projectPath, 'src/config');
+    criarPasta(projectPath, 'src/migrations');
 }
-
 // ==============================
 // BACKEND TYPESCRIPT
 // ==============================
-export function backendTS(projectPath: string) {
-
-    criarPastasBackend(projectPath)
-
+function backendTS(projectPath) {
+    criarPastasBackend(projectPath);
     const packageJson = `{
     "name": "backend",
     "version": "1.0.0",
@@ -76,8 +76,7 @@ export function backendTS(projectPath: string) {
         "@types/compression": "^1.7.5"
     }
 }
-`
-
+`;
     const tsConfig = `{
     "compilerOptions": {
         "target": "ES2020",
@@ -93,8 +92,7 @@ export function backendTS(projectPath: string) {
     "include": ["src/**/*"],
     "exclude": ["node_modules", "dist"]
 }
-`
-
+`;
     const serverTs = `// src/server.ts
 import 'reflect-metadata'
 import express from 'express'
@@ -125,21 +123,19 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log(\`Servidor rodando na porta \${PORT}\`))
-`
-
+`;
     const envFile = `PORT=3000
 NODE_ENV=development
 
 DB_HOST=localhost
 DB_PORT=3306
-DB_USER=
+DB_USER=root
 DB_PASSWORD=
 DB_DATABASE=
 
 JWT_SECRET=
-JWT_EXPIRES_IN=
-`
-
+JWT_EXPIRES_IN=1d
+`;
     const envConfig = `// src/config/env.ts
 import dotenv from 'dotenv'
 dotenv.config()
@@ -153,8 +149,7 @@ export const {
     JWT_SECRET,
     JWT_EXPIRES_IN
 } = process.env
-`
-
+`;
     const dataSource = `// src/config/data-source.ts
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
@@ -171,8 +166,7 @@ export const AppDataSource = new DataSource({
     logging: false,
     migrations: ['src/migrations/*.ts']
 })
-`
-
+`;
     const authMiddleware = `// src/middleware/auth.ts
 import { Request, Response, NextFunction } from 'express'
 
@@ -180,8 +174,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction):
     // TODO: adicione sua lógica de autenticação JWT aqui
     next()
 }
-`
-
+`;
     const errorMiddleware = `// src/middleware/error.ts
 import { Request, Response, NextFunction } from 'express'
 
@@ -189,8 +182,7 @@ export function errorMiddleware(err: any, req: Request, res: Response, next: Nex
     // TODO: adicione seu tratamento de erros aqui
     res.status(err.status || 500).json({ message: err.message || 'Erro interno' })
 }
-`
-
+`;
     const usuarioRoutes = `// src/routes/usuario.routes.ts
 import { Router } from 'express'
 import { UsuarioController } from '../controllers/UsuarioController'
@@ -206,49 +198,41 @@ const controller = new UsuarioController()
 // router.delete('/:id', controller.destroy)
 
 export default router
-`
-
+`;
     const usuarioSchema = `// src/schemas/usuario.schema.ts
 
 // TODO: adicione seus schemas de validação aqui
 // Exemplo com Zod:
 // import { z } from 'zod'
 // export const createUsuarioSchema = z.object({ ... })
-`
-
+`;
     const utilsIndex = `// src/utils/index.ts
 
 // TODO: adicione suas funções utilitárias aqui
-`
-
+`;
     const gitignore = `node_modules/
 .env
 dist/
-`
-
-    writeFile(projectPath, 'package.json', packageJson)
-    writeFile(projectPath, 'tsconfig.json', tsConfig)
-    writeFile(projectPath, 'src/server.ts', serverTs)
-    writeFile(projectPath, '.env', envFile)
-    writeFile(projectPath, '.gitignore', gitignore)
-    writeFile(projectPath, 'src/config/env.ts', envConfig)
-    writeFile(projectPath, 'src/config/data-source.ts', dataSource)
-    writeFile(projectPath, 'src/middleware/auth.ts', authMiddleware)
-    writeFile(projectPath, 'src/middleware/error.ts', errorMiddleware)
-    writeFile(projectPath, 'src/routes/usuario.routes.ts', usuarioRoutes)
-    writeFile(projectPath, 'src/schemas/usuario.schema.ts', usuarioSchema)
-    writeFile(projectPath, 'src/utils/index.ts', utilsIndex)
-
-    generateUniversalMVC(projectPath, 'typescript')
+`;
+    writeFile(projectPath, 'package.json', packageJson);
+    writeFile(projectPath, 'tsconfig.json', tsConfig);
+    writeFile(projectPath, 'src/server.ts', serverTs);
+    writeFile(projectPath, '.env', envFile);
+    writeFile(projectPath, '.gitignore', gitignore);
+    writeFile(projectPath, 'src/config/env.ts', envConfig);
+    writeFile(projectPath, 'src/config/data-source.ts', dataSource);
+    writeFile(projectPath, 'src/middleware/auth.ts', authMiddleware);
+    writeFile(projectPath, 'src/middleware/error.ts', errorMiddleware);
+    writeFile(projectPath, 'src/routes/usuario.routes.ts', usuarioRoutes);
+    writeFile(projectPath, 'src/schemas/usuario.schema.ts', usuarioSchema);
+    writeFile(projectPath, 'src/utils/index.ts', utilsIndex);
+    (0, templateuniversal_1.generateUniversalMVC)(projectPath, 'typescript');
 }
-
 // ==============================
 // BACKEND JAVASCRIPT
 // ==============================
-export function backendJS(projectPath: string) {
-
-    criarPastasBackend(projectPath)
-
+function backendJS(projectPath) {
+    criarPastasBackend(projectPath);
     const packageJson = `{
     "name": "backend",
     "version": "1.0.0",
@@ -277,8 +261,7 @@ export function backendJS(projectPath: string) {
         "nodemon": "^3.0.1"
     }
 }
-`
-
+`;
     const serverJs = `// server.js
 require('reflect-metadata')
 const express = require('express')
@@ -309,21 +292,19 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log(\`Servidor rodando na porta \${PORT}\`))
-`
-
+`;
     const envFile = `PORT=3000
 NODE_ENV=development
 
 DB_HOST=localhost
-DB_PORT=
+DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=
 DB_DATABASE=
 
 JWT_SECRET=
 JWT_EXPIRES_IN=1d
-`
-
+`;
     const envConfig = `// src/config/env.js
 require('dotenv').config()
 
@@ -346,8 +327,7 @@ module.exports = {
     JWT_SECRET,
     JWT_EXPIRES_IN
 }
-`
-
+`;
     const dataSource = `// src/config/data-source.js
 require('reflect-metadata')
 const { DataSource } = require('typeorm')
@@ -366,8 +346,7 @@ const AppDataSource = new DataSource({
 })
 
 module.exports = { AppDataSource }
-`
-
+`;
     const authMiddleware = `// src/middleware/auth.js
 
 function authMiddleware(req, res, next) {
@@ -376,8 +355,7 @@ function authMiddleware(req, res, next) {
 }
 
 module.exports = { authMiddleware }
-`
-
+`;
     const errorMiddleware = `// src/middleware/error.js
 
 function errorMiddleware(err, req, res, next) {
@@ -386,8 +364,7 @@ function errorMiddleware(err, req, res, next) {
 }
 
 module.exports = { errorMiddleware }
-`
-
+`;
     const usuarioRoutes = `// src/routes/usuario.routes.js
 const { Router } = require('express')
 const UsuarioController = require('../controllers/UsuarioController')
@@ -403,34 +380,30 @@ const controller = new UsuarioController()
 // router.delete('/:id', controller.destroy)
 
 module.exports = router
-`
-
+`;
     const usuarioSchema = `// src/schemas/usuario.schema.js
 
 // TODO: adicione seus schemas de validação aqui
-`
-
+`;
     const utilsIndex = `// src/utils/index.js
 
 // TODO: adicione suas funções utilitárias aqui
-`
-
+`;
     const gitignore = `node_modules/
 .env
 dist/
-`
-
-    writeFile(projectPath, 'package.json', packageJson)
-    writeFile(projectPath, 'server.js', serverJs)
-    writeFile(projectPath, '.env', envFile)
-    writeFile(projectPath, '.gitignore', gitignore)
-    writeFile(projectPath, 'src/config/env.js', envConfig)
-    writeFile(projectPath, 'src/config/data-source.js', dataSource)
-    writeFile(projectPath, 'src/middleware/auth.js', authMiddleware)
-    writeFile(projectPath, 'src/middleware/error.js', errorMiddleware)
-    writeFile(projectPath, 'src/routes/usuario.routes.js', usuarioRoutes)
-    writeFile(projectPath, 'src/schemas/usuario.schema.js', usuarioSchema)
-    writeFile(projectPath, 'src/utils/index.js', utilsIndex)
-
-    generateUniversalMVC(projectPath, 'javascript')
+`;
+    writeFile(projectPath, 'package.json', packageJson);
+    writeFile(projectPath, 'server.js', serverJs);
+    writeFile(projectPath, '.env', envFile);
+    writeFile(projectPath, '.gitignore', gitignore);
+    writeFile(projectPath, 'src/config/env.js', envConfig);
+    writeFile(projectPath, 'src/config/data-source.js', dataSource);
+    writeFile(projectPath, 'src/middleware/auth.js', authMiddleware);
+    writeFile(projectPath, 'src/middleware/error.js', errorMiddleware);
+    writeFile(projectPath, 'src/routes/usuario.routes.js', usuarioRoutes);
+    writeFile(projectPath, 'src/schemas/usuario.schema.js', usuarioSchema);
+    writeFile(projectPath, 'src/utils/index.js', utilsIndex);
+    (0, templateuniversal_1.generateUniversalMVC)(projectPath, 'javascript');
 }
+//# sourceMappingURL=templateTs.js.map
