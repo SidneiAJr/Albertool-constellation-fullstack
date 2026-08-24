@@ -1,13 +1,25 @@
 {
-  "name": "albertol-constellation-fullstack",
-  "displayName": "Albertol Constellation FullStack",
-  "description": "",
+  "name": "albertool-constellation-fullstack",
+  "displayName": "Albertool Constellation FullStack",
+  "description": "Gere projetos fullstack completos direto no VS Code — frontend, backend e um package.json global para instalar e rodar tudo com um único comando.",
   "version": "0.0.1",
+  "publisher": "SidAlbertaodasmassa",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": [
-    "Other"
+    "Scaffolders",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "fullstack",
+    "scaffold",
+    "react",
+    "node",
+    "typescript",
+    "boilerplate",
+    "albertool"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
